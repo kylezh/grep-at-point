@@ -2,6 +2,7 @@
 ; 其原理只是将grep和thingatpt简单地结合一下
 
 (provide 'grep-at-point)
+(provide 'nopromp-grep-at-point)
 
 (require 'thingatpt)
 
@@ -21,22 +22,17 @@
       )
      )
    )
-  (grep
-   (format
-    "cd %s && grep -nH -r '%s' . --include=\"%s\""
-    directory
-    word
-    extname
-    )
-   ))
+  (grep (format
+	 "cd %s && grep -nH -r '%s' . --include=\"%s\"" directory word extname))
+  )
 
 (defun nopromp-grep-at-point ()
   "grep the current word without promp"
   (interactive)
   (grep-at-point
-   (getenv "PWD")
+   (file-name-directory buffer-file-name)
    (thing-at-point 'symbol)
-   (default-file-pattern)
+   "*"
    )
   )
 
